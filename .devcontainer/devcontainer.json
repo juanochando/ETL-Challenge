@@ -101,12 +101,12 @@
 			"version": "latest"
 		},
 		"ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
-			"plugins": "azure git git-auto-fetch git-commit git-prompt aliases command-not-found zsh-syntax-highlighting",
+			"plugins": "azure git git-auto-fetch git-commit git-prompt aliases command-not-found",
 			// Other interesting plugins:
 			// aws azure autoenv autojump branch bun catimg colored-man-pages colorize composer copyfile copypath dotenv
 			// emoji emoji-clock encode64 extract fancy-ctrl-z genpass git-escape-magic git-extras gitfast git-lfs git-prompt
 			// jira jsontools last-working-dir npm
-			// ssh ssh-agent n98-magerun per-directory-history safe-paste themes urltools z
+			// ssh ssh-agent n98-magerun per-directory-history safe-paste themes urltools z zsh-syntax-highlighting
 			"omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions",
 			"username": "vscode"
 		},
