@@ -1,0 +1,5 @@
+CREATE DATABASE KernelMemoryDb;
+CREATE DATABASE BanksAiChatDb;
+
+GO
+

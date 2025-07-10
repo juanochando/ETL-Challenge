@@ -1,0 +1,141 @@
+// For format details, see https://aka.ms/devcontainer.json. 
+// For config options, see the README at: https://github.com/microsoft/azuresql-devcontainers/tree/main/src/dotnet-aspire
+{
+	"name": "Das Challenge",
+	"image": "mcr.microsoft.com/devcontainers/dotnet:9.0-bookworm",
+	"workspaceFolder": "/workspace",
+	"hostRequirements": {
+		"cpus": 4,
+		"memory": "16gb",
+		"storage": "32gb"
+	},
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"terminal.integrated.profiles.linux": {
+					"zsh": {
+						"path": "/usr/bin/zsh"
+					}
+				},
+				"terminal.integrated.defaultProfile.linux": "zsh",
+				"mssql.connections": [
+					{
+						"server": "localhost,1433",
+						"database": "master",
+						"authenticationType": "SqlLogin",
+						"user": "sa",
+						"password": "${env:MSSQL_SA_PASSWORD}",
+						"savePassword": true,
+						"profileName": "LocalDev",
+						"trustServerCertificate": true
+					}
+				],
+				"sqlDatabaseProjects.dotnetSDK Location": "/usr/share/dotnet",
+			},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-dotnettools.csdevkit",
+				"ms-dotnettools.csharp",
+				"ms-mssql.mssql",
+				"ms-azuretools.vscode-docker",
+				"github.copilot",
+				"GitHub.copilot-chat",
+				"eamodio.gitlens",
+				"mhutchie.git-graph",
+				"EditorConfig.EditorConfig",
+				"MS-vsliveshare.vsliveshare-pack",
+				"streetsidesoftware.code-spell-checker",
+				"jongrant.csharpsortusings",
+				"kreativ-software.csharpextensions",
+				"bierner.github-markdown-preview",
+				"DavidAnson.vscode-markdownlint",
+				"docsmsft.docs-linting",
+				"johnpapa.read-time",
+				"yzhang.markdown-all-in-one",
+				"shardulm94.trailing-spaces",
+				"jmrog.vscode-nuget-package-manager",
+				"patcx.vscode-nuget-gallery",
+				"k--kato.docomment",
+				"formulahendry.dotnet",
+				"ms-dotnettools.csharp",
+				"ms-vscode.PowerShell",
+				"ms-vscode.vscode-node-azure-pack",
+				"VisualStudioExptTeam.vscodeintellicode",
+				"temilaj.asp-net-core-vs-code-extension-pack",
+				"josefpihrt-vscode.roslynator",
+				"adrianwilczynski.namespace",
+				"jesschadwick.nuget-reverse-package-search",
+				"dbaeumer.vscode-eslint",
+				"adrianwilczynski.libman",
+				"formulahendry.dotnet-test-explorer",
+				"formulahendry.auto-rename-tag",
+				"ms-dotnettools.vscodeintellicode-csharp",
+				"aliasadidev.nugetpackagemanagergui",
+				"ms-semantic-kernel.semantic-kernel",
+				"qwtel.sqlite-viewer",
+				"shyykoserhiy.git-autoconfig",
+				"atlassian.atlascode",
+				"ms-dotnettools.vscode-dotnet-runtime",
+				"ms-vscode.azure-account",
+				"usernamehw.errorlens",
+				"kisstkondoros.vscode-codemetrics",
+				"sonarsource.sonarlint-vscode",
+				"esbenp.prettier-vscode"
+			]
+		}
+	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		5000,
+		5001,
+		8000,
+		1433
+	],
+	// Post create commands to run after the container is created.
+	"postCreateCommand": "bash .devcontainer/postCreate.sh",
+	// Post start commands to run after the container is started.
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"configureZshAsDefaultShell": true,
+			"installOhMyZsh": true,
+			"installOhMyZshConfig": true,
+			// "upgradePackages": true,
+			// "nonFreePackages": true,
+			// "username": "vscode",
+			"userUid": "automatic",
+			"userGid": "automatic"
+		},
+		"ghcr.io/devcontainers/features/git:1": {
+			"ppa": true,
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/git-lfs:1": {
+			"autoPull": true,
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
+			"plugins": "git git-auto-fetch git-commit git-prompt aliases chucknorris command-not-found zsh-syntax-highlighting",
+			// Other interesting plugins:
+			// aws azure autoenv autojump branch bun catimg colored-man-pages colorize composer copyfile copypath dotenv
+			// emoji emoji-clock encode64 extract fancy-ctrl-z genpass git-escape-magic git-extras gitfast git-lfs git-prompt
+			// jira jsontools last-working-dir npm
+			// ssh ssh-agent n98-magerun per-directory-history safe-paste themes urltools z
+			"omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions",
+			"username": "vscode"
+		},
+		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:2": {},
+		"ghcr.io/devcontainers-extra/features/pre-commit:2": {},
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/nikiforovall/devcontainer-features/dotnet-aspire:1": {},
+		"ghcr.io/devcontainers/features/powershell:1": {}
+	}
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
