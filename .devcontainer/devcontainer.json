@@ -20,19 +20,7 @@
 					}
 				},
 				"terminal.integrated.defaultProfile.linux": "zsh",
-				"mssql.connections": [
-					{
-						"server": "localhost,1433",
-						"database": "master",
-						"authenticationType": "SqlLogin",
-						"user": "sa",
-						"password": "${env:MSSQL_SA_PASSWORD}",
-						"savePassword": true,
-						"profileName": "LocalDev",
-						"trustServerCertificate": true
-					}
-				],
-				"sqlDatabaseProjects.dotnetSDK Location": "/usr/share/dotnet",
+				"sqlDatabaseProjects.dotnetSDK Location": "/usr/share/dotnet"
 			},
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
@@ -103,22 +91,17 @@
 			"configureZshAsDefaultShell": true,
 			"installOhMyZsh": true,
 			"installOhMyZshConfig": true,
-			// "upgradePackages": true,
-			// "nonFreePackages": true,
-			// "username": "vscode",
+			"upgradePackages": true,
+			"nonFreePackages": true,
+			"username": "vscode",
 			"userUid": "automatic",
 			"userGid": "automatic"
 		},
 		"ghcr.io/devcontainers/features/git:1": {
-			"ppa": true,
-			"version": "latest"
-		},
-		"ghcr.io/devcontainers/features/git-lfs:1": {
-			"autoPull": true,
 			"version": "latest"
 		},
 		"ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
-			"plugins": "git git-auto-fetch git-commit git-prompt aliases chucknorris command-not-found zsh-syntax-highlighting",
+			"plugins": "azure git git-auto-fetch git-commit git-prompt aliases command-not-found zsh-syntax-highlighting",
 			// Other interesting plugins:
 			// aws azure autoenv autojump branch bun catimg colored-man-pages colorize composer copyfile copypath dotenv
 			// emoji emoji-clock encode64 extract fancy-ctrl-z genpass git-escape-magic git-extras gitfast git-lfs git-prompt
@@ -128,13 +111,36 @@
 			"username": "vscode"
 		},
 		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:2": {},
-		"ghcr.io/devcontainers-extra/features/pre-commit:2": {},
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+		"ghcr.io/devcontainers-extra/features/pre-commit:2": {
 			"version": "latest"
 		},
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"moby": true,
+			"installDockerBuildx": true,
+			"installDockerComposeSwitch": true,
+			"version": "latest",
+			"dockerDashComposeVersion": "v2"
+		},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"moby": true,
+			"azureDnsAutoDetection": true,
+			"installDockerBuildx": true,
+			"installDockerComposeSwitch": true,
+			"disableIp6tables": true,
+			"version": "latest",
+			"dockerDashComposeVersion": "v2"
+		},
 		"ghcr.io/nikiforovall/devcontainer-features/dotnet-aspire:1": {},
-		"ghcr.io/devcontainers/features/powershell:1": {}
+		"ghcr.io/devcontainers/features/powershell:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"nodeGypDependencies": true,
+			"installYarnUsingApt": true,
+			"version": "lts",
+			"pnpmVersion": "latest",
+			"nvmVersion": "latest"
+		}
 	}
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"

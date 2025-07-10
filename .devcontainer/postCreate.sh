@@ -1,5 +1,4 @@
 #!/bin/bash
-bash .devcontainer/sql/postCreateCommand.sh 'P@ssw0rd' './bin/Debug/' '.devcontainer/sql/'
 
 # Install dotnet tools
 export PATH=$PATH:/root/.dotnet/tools
