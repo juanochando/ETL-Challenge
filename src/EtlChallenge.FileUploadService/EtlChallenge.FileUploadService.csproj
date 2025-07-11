@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../EtlChallenge.Contracts/EtlChallenge.Contracts.csproj" />
     <ProjectReference Include="../EtlChallenge.ServiceDefaults/EtlChallenge.ServiceDefaults.csproj" />
   </ItemGroup>
 

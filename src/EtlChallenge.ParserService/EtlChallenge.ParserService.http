@@ -1,0 +1,6 @@
+@EtlChallenge.ParserService_HostAddress = http://localhost:5097
+
+GET {{EtlChallenge.ParserService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

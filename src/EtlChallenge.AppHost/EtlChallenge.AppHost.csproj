@@ -17,7 +17,8 @@
   <ItemGroup>
     <ProjectReference Include="../EltChallenge.UI/EltChallenge.UI.csproj" />
     <ProjectReference Include="../EtlChallenge.LoadService/EtlChallenge.LoadService.csproj" />
-    <ProjectReference Include="../EtlChallenge.UnzipService/EtlChallenge.UnzipService.csproj" />
+    <ProjectReference Include="../EtlChallenge.FileUploadService/EtlChallenge.FileUploadService.csproj" />
+    <ProjectReference Include="../EtlChallenge.ParserService/EtlChallenge.ParserService.csproj" />
     <ProjectReference Include="../EtlChallenge.ValidateService/EtlChallenge.ValidateService.csproj" />
   </ItemGroup>
 

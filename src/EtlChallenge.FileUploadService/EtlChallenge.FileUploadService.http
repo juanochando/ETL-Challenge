@@ -1,0 +1,6 @@
+@EtlChallenge.FileUploadService = http://localhost:5160
+
+GET {{EtlChallenge.FileUploadService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

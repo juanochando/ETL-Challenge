@@ -1,8 +1,9 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 builder.AddProject<Projects.EltChallenge_UI>("ui");
-builder.AddProject<Projects.EtlChallenge_LoadService>("ui");
-builder.AddProject<Projects.EtlChallenge_UnzipService>("ui");
-builder.AddProject<Projects.EtlChallenge_ValidateService>("ui");
+builder.AddProject<Projects.EtlChallenge_FileUploadService>("unzip-service");
+builder.AddProject<Projects.EtlChallenge_LoadService>("load-service");
+builder.AddProject<Projects.EtlChallenge_ParserService>("validate-service");
+builder.AddProject<Projects.EtlChallenge_ValidateService>("validate-service");
 
-builder.Build().Run();
+await builder.Build().RunAsync();
