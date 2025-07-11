@@ -77,7 +77,8 @@
 				"usernamehw.errorlens",
 				"kisstkondoros.vscode-codemetrics",
 				"sonarsource.sonarlint-vscode",
-				"esbenp.prettier-vscode"
+				"esbenp.prettier-vscode",
+				"microsoft-aspire.aspire-vscode"
 			]
 		}
 	},
