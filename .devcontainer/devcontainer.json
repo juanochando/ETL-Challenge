@@ -27,7 +27,13 @@
 					}
 				},
 				"terminal.integrated.defaultProfile.linux": "zsh",
-				"sqlDatabaseProjects.dotnetSDK Location": "/usr/share/dotnet"
+				"sqlDatabaseProjects.dotnetSDK Location": "/usr/share/dotnet",
+				"remote.autoForwardPorts": true,
+				"remote.autoForwardPortsSource": "hybrid",
+				"remote.otherPortsAttributes": {
+					"onAutoForward": "ignore"
+				},
+				"dotnet.defaultSolution": "src/EtlChallenge.sln"
 			},
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
@@ -73,7 +79,6 @@
 				"shyykoserhiy.git-autoconfig",
 				"atlassian.atlascode",
 				"ms-dotnettools.vscode-dotnet-runtime",
-				"ms-vscode.azure-account",
 				"usernamehw.errorlens",
 				"kisstkondoros.vscode-codemetrics",
 				"sonarsource.sonarlint-vscode",
@@ -83,12 +88,12 @@
 		}
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [
-		5000,
-		5001,
-		8000,
-		1433
-	],
+	// "forwardPorts": [
+	// 	5000,
+	// 	5001,
+	// 	8000,
+	// 	1433
+	// ],
 	// Post create commands to run after the container is created.
 	"postCreateCommand": "bash .devcontainer/postCreate.sh",
 	// Post start commands to run after the container is started.
