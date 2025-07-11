@@ -7,7 +7,11 @@ dotnet tool install -g dotnet-ef
 sudo dotnet workload update
 sudo dotnet workload install aspire
 
-# Trust dev certicficate and restore packages
-cd ETLChallenge.UI
+# Trust dev certicficate
 dotnet dev-certs https --trust; dotnet dev-certs https -ep "${HOME}/.aspnet/https/aspnetapp.pfx" -p "@SecurePwdGoesHere#"
+
+# Aspire specific
+dotnet new install Aspire.ProjectTemplates --force
+
+# Restore packages
 dotnet restore

@@ -1,14 +1,21 @@
-// For format details, see https://aka.ms/devcontainer.json. 
+// For format details, see https://aka.ms/devcontainer.json.
 // For config options, see the README at: https://github.com/microsoft/azuresql-devcontainers/tree/main/src/dotnet-aspire
 {
 	"name": "Das Challenge",
 	"image": "mcr.microsoft.com/devcontainers/dotnet:9.0-bookworm",
-	"workspaceFolder": "/workspace",
 	"hostRequirements": {
 		"cpus": 4,
 		"memory": "16gb",
 		"storage": "32gb"
 	},
+	"runArgs": [
+		"--sysctl",
+		"net.ipv6.conf.all.disable_ipv6=0",
+		"--sysctl",
+		"net.ipv6.conf.default.forwarding=1",
+		"--sysctl",
+		"net.ipv6.conf.all.forwarding=1"
+	],
 	"customizations": {
 		// Configure properties specific to VS Code.
 		"vscode": {
@@ -128,7 +135,8 @@
 			"installDockerComposeSwitch": true,
 			"disableIp6tables": true,
 			"version": "latest",
-			"dockerDashComposeVersion": "v2"
+			"dockerDashComposeVersion": "v2",
+			"enableNonRootDocker": true
 		},
 		"ghcr.io/nikiforovall/devcontainer-features/dotnet-aspire:1": {},
 		"ghcr.io/devcontainers/features/powershell:1": {
