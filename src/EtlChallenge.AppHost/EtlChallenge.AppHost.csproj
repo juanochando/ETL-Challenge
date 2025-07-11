@@ -14,4 +14,11 @@
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../EltChallenge.UI/EltChallenge.UI.csproj" />
+    <ProjectReference Include="../EtlChallenge.LoadService/EtlChallenge.LoadService.csproj" />
+    <ProjectReference Include="../EtlChallenge.UnzipService/EtlChallenge.UnzipService.csproj" />
+    <ProjectReference Include="../EtlChallenge.ValidateService/EtlChallenge.ValidateService.csproj" />
+  </ItemGroup>
+
 </Project>

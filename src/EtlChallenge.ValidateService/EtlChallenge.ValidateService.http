@@ -1,0 +1,6 @@
+@EtlChallenge.ValidateService_HostAddress = http://localhost:5218
+
+GET {{EtlChallenge.ValidateService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

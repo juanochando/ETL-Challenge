@@ -1,0 +1,6 @@
+@EtlChallenge.UnzipService_HostAddress = http://localhost:5160
+
+GET {{EtlChallenge.UnzipService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
