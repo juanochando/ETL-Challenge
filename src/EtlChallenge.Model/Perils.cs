@@ -1,4 +1,4 @@
-namespace EtlChallenge.LoadService.Domain.Model;
+namespace EtlChallenge.Model;
 
 public enum Perils
 {

@@ -98,4 +98,4 @@ Thus, some implementation leaks are intentional, like having an isolated table w
 # Useful commands
 
 * alias build="dotnet build /workspaces/ETLChallenge/src/EtlChallenge.sln"
-* alias run ="dotnet build /workspaces/ETLChallenge/src/EtlChallenge.AppHost/EtlChallenge.AppHost.csproj"
+* alias run="dotnet run --project /workspaces/ETLChallenge/src/EtlChallenge.AppHost/EtlChallenge.AppHost.csproj"

@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace EtlChallenge.LoadService.Domain.Model;
+namespace EtlChallenge.Model;
 
 [ExcludeFromCodeCoverage]
 public class Policy
