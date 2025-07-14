@@ -5,6 +5,28 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Upload a policies and risks file</h1>
+    <p>Use the form below to upload your policies and risks file for processing.</p>
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="fileInput">Select file:</label>
+            <input type="file" asp-for="UploadedFile" class="form-control-file" id="fileInput" name="fileInput"
+                required>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.UploadResult))
+        {
+            <div class="alert alert-info">
+                <strong>Upload Result:</strong> @Model.UploadResult
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                <strong>Error:</strong> @Model.ErrorMessage
+            </div>
+        }
+    </form>
 </div>

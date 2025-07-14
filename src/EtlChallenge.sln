@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtlChallenge.Contracts", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtlChallenge.ParserService", "EtlChallenge.ParserService\EtlChallenge.ParserService.csproj", "{94A133C9-4892-4AFD-AA06-F57A823EC6F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EtlChallenge.StorageService", "EtlChallenge.StorageService\EtlChallenge.StorageService.csproj", "{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,18 @@ Global
 		{94A133C9-4892-4AFD-AA06-F57A823EC6F7}.Release|x64.Build.0 = Release|Any CPU
 		{94A133C9-4892-4AFD-AA06-F57A823EC6F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{94A133C9-4892-4AFD-AA06-F57A823EC6F7}.Release|x86.Build.0 = Release|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Debug|x64.Build.0 = Debug|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Debug|x86.Build.0 = Debug|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Release|x64.ActiveCfg = Release|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Release|x64.Build.0 = Release|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Release|x86.ActiveCfg = Release|Any CPU
+		{EE46D0FA-211E-4DCD-BB25-EF7EE9632B17}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
