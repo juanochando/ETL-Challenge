@@ -15,5 +15,5 @@ public interface IStorageService
     /// </summary>
     /// <param name="fileReference">The reference of the file to retrieve.</param>
     /// <returns>A task that represents the asynchronous operation, containing the file content as a stream.</returns>
-    byte[] GetFileAsync(string fileReference);
+    Task<byte[]> GetFileAsync(string fileReference);
 }

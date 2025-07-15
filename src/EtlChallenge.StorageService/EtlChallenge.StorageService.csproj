@@ -10,4 +10,8 @@
     <PackageReference Include="Aspire.Azure.Storage.Blobs" Version="9.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../EtlChallenge.Contracts/EtlChallenge.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

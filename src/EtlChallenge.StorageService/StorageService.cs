@@ -1,38 +1,53 @@
-using System.Collections.Concurrent;
+using Azure.Storage.Blobs;
+using EtlChallenge.Contracts.Application;
 using Microsoft.Extensions.Logging;
 
 namespace EtlChallenge.StorageService;
 
-// TODO: Move to the DB or Azure Blob sotrage
-public class StorageService(ILogger<StorageService> logger) : IStorageService
+public class StorageService(
+    BlobServiceClient blobServiceClient,
+    ILogger<StorageService> logger) : IStorageService
 {
-    private readonly ConcurrentDictionary<string, byte[]> _fileStorage = new();
-
     public async Task<string> UploadFileAsync(string fileName, Stream fileContent)
     {
-        logger.LogTrace("Uploading file {FileName}", fileName);
+        logger.LogTrace("Storing file {FileName}", fileName);
 
         // Generate a unique reference for the file
         string fileReference = $"{Guid.NewGuid()}_{fileName}";
 
-        // Copy the file content to a memory stream
-        using var memoryStream = new MemoryStream();
-        await fileContent.CopyToAsync(memoryStream);
-        byte[] fileBytes = memoryStream.ToArray();
+        // Get a reference to a container (create if it doesn't exist)
+        var containerClient = blobServiceClient.GetBlobContainerClient(Constants.StorageService_FilesContainer);
+        await containerClient.CreateIfNotExistsAsync();
 
-        // Store the file in the dictionary
-        _fileStorage[fileReference] = fileBytes;
+        // Get a reference to a blob
+        var blobClient = containerClient.GetBlobClient(fileReference);
+
+        // Upload the file to Azure Blob Storage
+        await blobClient.UploadAsync(fileContent, true);
 
         return fileReference;
     }
 
-    public byte[] GetFileAsync(string fileReference)
+    public async Task<byte[]> GetFileAsync(string fileReference)
     {
-        if (_fileStorage.TryGetValue(fileReference, out var fileContent))
+        logger.LogTrace("Retrieving file {FileReference}", fileReference);
+
+        // Get a reference to the container
+        var containerClient = blobServiceClient.GetBlobContainerClient(Constants.StorageService_FilesContainer);
+
+        // Get a reference to the blob
+        var blobClient = containerClient.GetBlobClient(fileReference);
+
+        // Check if the blob exists
+        var exists = await blobClient.ExistsAsync();
+        if (!exists.Value)
         {
-            return fileContent;
+            throw new FileNotFoundException($"File with reference {fileReference} not found.");
         }
 
-        throw new FileNotFoundException($"File with reference {fileReference} not found.");
+        // Download the blob content
+        using var memoryStream = new MemoryStream();
+        await blobClient.DownloadToAsync(memoryStream);
+        return memoryStream.ToArray();
     }
 }

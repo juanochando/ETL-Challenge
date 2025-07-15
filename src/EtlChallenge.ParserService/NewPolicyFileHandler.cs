@@ -47,7 +47,7 @@ public class NewPolicyFileHandler(IStorageService storageService,
     {
         bool isFirstLine = true;
 
-        var fileContents = storageService.GetFileAsync(fileReference);
+        var fileContents = await storageService.GetFileAsync(fileReference);
 
         using var fileStream = new MemoryStream(fileContents);
         using var reader = new StreamReader(fileStream);

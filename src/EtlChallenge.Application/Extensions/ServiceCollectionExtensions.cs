@@ -1,10 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using EtlChallenge.Application.Services;
-using EtlChallenge.StorageService;
-using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MassTransit;
+using EtlChallenge.Application.Services;
+using EtlChallenge.StorageService.Extensions;
 
 namespace EtlChallenge.Application.Extensions;
 
@@ -16,6 +15,8 @@ public static class ServiceCollectionExtensions
             IConfiguration configuration,
             Type[]? consumers = null)
     {
+        services.AddStorageService(configuration);
+
         services.AddMassTransit(x =>
             {
                 x.SetKebabCaseEndpointNameFormatter();
@@ -31,7 +32,6 @@ public static class ServiceCollectionExtensions
                     x.AddConsumers(consumers);
             });
 
-        services.AddSingleton<IStorageService, StorageService.StorageService>();
         services.AddTransient<IPolicyService, PolicyService>();
 
         return services;
