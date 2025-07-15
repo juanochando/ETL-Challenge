@@ -1,12 +1,11 @@
+using EtlChallenge.Application.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.AddServiceDefaults();
 
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssemblyContaining<Program>();
-});
+builder.Services.AddEtlChallengeApplication(builder.Configuration);
 
 var app = builder.Build();
 

@@ -1,6 +1,0 @@
-@EtlChallenge.LoadService_HostAddress = http://localhost:5009
-
-GET {{EtlChallenge.LoadService_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

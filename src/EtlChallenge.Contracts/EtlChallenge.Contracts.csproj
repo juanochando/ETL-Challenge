@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../EtlChallenge.Model/EtlChallenge.Model.csproj" />
+  </ItemGroup>
+
 </Project>

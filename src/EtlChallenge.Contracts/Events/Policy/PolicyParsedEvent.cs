@@ -1,7 +1,9 @@
+using EtlChallenge.Model;
+
 namespace EtlChallenge.Contracts.Events.Policy;
 
 public record PolicyParsedEvent
-    (Guid CorrelationId, DateTimeOffset? Timestamp = null)
+    (Guid CorrelationId, Model.Policy Policy, DateTimeOffset? Timestamp = null)
     : BaseEvent(CorrelationId, Timestamp)
 {
 }

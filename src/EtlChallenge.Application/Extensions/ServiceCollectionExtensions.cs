@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using EtlChallenge.Application.Services;
 using EtlChallenge.StorageService;
 using MassTransit;
@@ -12,7 +13,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddEtlChallengeApplication(
             this IServiceCollection services,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            Type[]? consumers = null)
     {
         services.AddMassTransit(x =>
             {
@@ -24,6 +26,9 @@ public static class ServiceCollectionExtensions
                     cfg.Host(host);
                     cfg.ConfigureEndpoints(context);
                 });
+
+                if (consumers is not null)
+                    x.AddConsumers(consumers);
             });
 
         services.AddSingleton<IStorageService, StorageService.StorageService>();
