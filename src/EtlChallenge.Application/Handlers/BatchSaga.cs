@@ -10,11 +10,18 @@ namespace EtlChallenge.Application.Handlers;
 // Saga state
 public class BatchState : SagaStateMachineInstance
 {
-    public Guid CorrelationId { get; set; }           // = BatchId
-    public HashSet<string> MissingPolicies { get; set; } = new();
+    public Guid CorrelationId { get; set; }
+    public HashSet<string> PoliciesSeen { get; set; } = [];      // policies present
+    public HashSet<string> MissingPolicyRefs { get; set; } = []; // risks w/o parent
     public bool PolicyFileDone { get; set; }
     public bool RiskFileDone { get; set; }
-    public string CurrentState { get; set; } = null!;
+
+    public string PolicyFileReference { get; set; } = string.Empty; // reference to the policy file
+
+    /// <summary>
+    /// The saga state machine instance current state
+    /// </summary>
+    public string CurrentState { get; set; } = string.Empty;
 }
 
 public class BatchSaga : MassTransitStateMachine<BatchState>
@@ -24,60 +31,91 @@ public class BatchSaga : MassTransitStateMachine<BatchState>
     public Event<PolicyFileParseCompletedEvent> PolicyFileParseCompleted { get; } = null!;
     public Event<RiskFileParseCompletedEvent> RiskFileParseCompleted { get; } = null!;
 
-    State Waiting { get; } = null!;   // until both files done
+    // TODO: Listen to error events
 
-    [Obsolete]
-    public BatchSaga()
+    public State Active { get; } = null!; // until all files processed
+
+    public BatchSaga(ILogger<BatchSaga> logger)
     {
         InstanceState(x => x.CurrentState);
 
+        Event(() => PolicyParsed, x => x.CorrelateById(context => context.Message.CorrelationId));
+        Event(() => RiskParsed, x => x.CorrelateById(context => context.Message.CorrelationId));
+        Event(() => PolicyFileParseCompleted, x => x.CorrelateById(context => context.Message.CorrelationId));
+        Event(() => RiskFileParseCompleted, x => x.CorrelateById(context => context.Message.CorrelationId));
+
+        SetCompletedWhenFinalized();
+
         Initially(
             When(PolicyParsed)
-                .Then(ctx => ctx.Instance.MissingPolicies.Add(ctx.Data.Policy.Id))
-                .TransitionTo(Waiting),
+                .Then(ctx => logger.LogTrace("Batch process: Policy parsed: {PolicyId}", ctx.Message.Policy.Id))
+                .Then(ctx =>
+                {
+                    HandlePolicy(ctx.Saga, ctx.Message.Policy.Id);
+                    ctx.Saga.PolicyFileReference = ctx.Message.PolicyFileReference;
+                })
+                .TransitionTo(Active),
+
             When(RiskParsed)
-                .ThenAsync(HandleRisk)
-                .TransitionTo(Waiting)
+                .Then(ctx => logger.LogTrace("Batch process: Risk parsed: {PolicyId}", ctx.Message.Risk.Id))
+                .Then(ctx => HandleRisk(ctx.Saga, ctx.Message.Risk.Id))
+                .TransitionTo(Active)
         );
 
-        During(Waiting,
-            When(PolicyParsed).Then(ctx => ctx.Instance.MissingPolicies.Add(ctx.Data.Policy.Id)),
-            When(RiskParsed).ThenAsync(HandleRisk),
+        During(Active,
+            When(PolicyParsed)
+                .Then(ctx => logger.LogTrace("Batch process: Policy parsed: {PolicyId}", ctx.Message.Policy.Id))
+                .Then(ctx =>
+                {
+                    HandlePolicy(ctx.Saga, ctx.Message.Policy.Id);
+                    ctx.Saga.PolicyFileReference = ctx.Message.PolicyFileReference;
+                }),
+
+            When(RiskParsed)
+                .Then(ctx => logger.LogTrace("Batch process: Risk parsed: {PolicyId}", ctx.Message.Risk.Id))
+                .Then(ctx => HandleRisk(ctx.Saga, ctx.Message.Risk.PolicyId)),
+
             When(PolicyFileParseCompleted)
-                .Then(ctx => ctx.Instance.PolicyFileDone = true)
-                .ThenAsync(TryFinish),
-            When(RiskFileParseCompleted)
-                .Then(ctx => ctx.Instance.RiskFileDone = true)
+                .Then(ctx => logger.LogTrace("Batch process: Policy file parse completed: {PolicyFileReference}", ctx.Message.PolicyFileReference))
+                .Then(ctx => ctx.Saga.PolicyFileDone = true)
                 .ThenAsync(TryFinish)
+                .If(ctx => ctx.Saga.PolicyFileDone && ctx.Saga.RiskFileDone,
+                    x => x.Finalize()),
+
+            When(RiskFileParseCompleted)
+                .Then(ctx => logger.LogTrace("Batch process: Risk file parse completed: {RiskFileReference}", ctx.Message.RiskFileReference))
+                .Then(ctx => ctx.Saga.RiskFileDone = true)
+                .ThenAsync(TryFinish)
+                .If(ctx => ctx.Saga.PolicyFileDone && ctx.Saga.RiskFileDone,
+                    x => x.Finalize())
         );
     }
 
-    [Obsolete]
-    static Task HandleRisk(BehaviorContext<BatchState, RiskParsedEvent> ctx)
+    static void HandlePolicy(BatchState state, string policyId)
     {
-        // remove satisfied parent; if parent not yet seen, add to waiting list
-        ctx.Instance.MissingPolicies.Remove(ctx.Data.Risk.Id);
-        if (!ctx.Instance.PolicyFileDone)
-            ctx.Instance.MissingPolicies.Add(ctx.Data.Risk.PolicyId); // risk before its policy
-        return Task.CompletedTask;
+        state.PoliciesSeen.Add(policyId);
+        state.MissingPolicyRefs.Remove(policyId); // resolve any orphan risks
     }
 
-    [Obsolete]
+    static void HandleRisk(BatchState state, string policyId)
+    {
+        if (!state.PoliciesSeen.Contains(policyId))
+            state.MissingPolicyRefs.Add(policyId); // risk before its policy
+    }
+
     static Task TryFinish(BehaviorContext<BatchState> ctx)
     {
-        if (ctx.Instance.PolicyFileDone && ctx.Instance.RiskFileDone)
+        if (ctx.Saga.PolicyFileDone && ctx.Saga.RiskFileDone)
         {
-            if (ctx.Instance.MissingPolicies.Count == 0)
-            {
-                return ctx.Publish<PolicyFileParseCompletedEvent>(new { ctx.Instance.CorrelationId });
-            }
-            return ctx.Publish<PolicyFileValidationErrorEvent>(new
-            {
-                ctx.Instance.CorrelationId,
-                Reason = "Orphan risks without parent policies: " +
-                         string.Join(',', ctx.Instance.MissingPolicies)
-            });
+            if (ctx.Saga.MissingPolicyRefs.Count == 0)
+                return ctx.Publish(new PolicyFileParseCompletedEvent(ctx.Saga.CorrelationId, ctx.Saga.PolicyFileReference));
+
+            return ctx.Publish(new PolicyFileValidationErrorEvent(
+                ctx.Saga.CorrelationId, ctx.Saga.PolicyFileReference,
+                [.. ctx.Saga.MissingPolicyRefs]
+            ));
         }
+
         return Task.CompletedTask;
     }
 }

@@ -22,9 +22,10 @@ public class NewPolicyFileHandler(IStorageService storageService,
             await foreach (var policy in ReadPolicyFileAsync(context.Message.PolicyFileReference))
             {
                 count++;
-                // Process each policy as it becomes available
+                // Publish each policy as it becomes available
                 await publishEndpoint.Publish(new PolicyParsedEvent(
                     context.Message.CorrelationId,
+                    context.Message.PolicyFileReference,
                     new Model.Policy
                     {
                         Id = policy.ID,
@@ -35,13 +36,21 @@ public class NewPolicyFileHandler(IStorageService storageService,
             logger.LogTrace("Successfully parsed {Count} policies from file {PolicyFileReference}",
                 count, context.Message.PolicyFileReference);
 
-            // Here you would typically do something with the parsed policies
-            // such as saving to a database, publishing events, etc.
+            // Publish policy file completed event
+            await publishEndpoint.Publish(new PolicyFileParseCompletedEvent(
+                context.Message.CorrelationId,
+                context.Message.PolicyFileReference));
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Error processing policy file {PolicyFileReference}",
                 context.Message.PolicyFileReference);
+
+            // Publish policy file parse error event
+            await publishEndpoint.Publish(new PolicyFileValidationErrorEvent(
+                context.Message.CorrelationId,
+                context.Message.PolicyFileReference,
+                [ex.Message]));
         }
     }
 

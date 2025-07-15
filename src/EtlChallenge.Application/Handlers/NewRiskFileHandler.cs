@@ -23,9 +23,10 @@ public class NewRiskFileHandler(IStorageService storageService,
             await foreach (var Risk in ReadRiskFileAsync(context.Message.RiskFileReference))
             {
                 count++;
-                // Process each Risk as it becomes available
+                // Publish each Risk as it becomes available
                 await publishEndpoint.Publish(new RiskParsedEvent(
                     context.Message.CorrelationId,
+                    context.Message.RiskFileReference,
                     new Risk
                     {
                         Id = Risk.ID,
@@ -42,13 +43,20 @@ public class NewRiskFileHandler(IStorageService storageService,
             logger.LogTrace("Successfully parsed {Count} risks from file {RiskFileReference}",
                 count, context.Message.RiskFileReference);
 
-            // Here you would typically do something with the parsed policies
-            // such as saving to a database, publishing events, etc.
+            // Publish risk file completed event
+            await publishEndpoint.Publish(new RiskFileParseCompletedEvent(
+                context.Message.CorrelationId,
+                context.Message.RiskFileReference));
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Error processing Risk file {RiskFileReference}",
                 context.Message.RiskFileReference);
+
+            // Publish policy file parse error event
+            await publishEndpoint.Publish(new RiskFileValidationErrorEvent(
+                context.Message.CorrelationId,
+                context.Message.RiskFileReference));
         }
     }
 

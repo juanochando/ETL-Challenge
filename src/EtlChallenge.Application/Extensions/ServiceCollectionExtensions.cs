@@ -13,7 +13,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddEtlChallengeApplication(
             this IServiceCollection services,
             IConfiguration configuration,
-            Type[]? consumers = null)
+            Type[]? consumers = null,
+            (Type sagaType, Type sagaStateType)[]? sagas = null)
     {
         services.AddStorageService(configuration);
 
@@ -30,6 +31,12 @@ public static class ServiceCollectionExtensions
 
                 if (consumers is not null)
                     x.AddConsumers(consumers);
+
+                if (sagas is not null)
+                    Array.ForEach(
+                        sagas,
+                        saga => x.AddSagaStateMachine(saga.sagaType));
+
             });
 
         services.AddTransient<IPolicyService, PolicyService>();
