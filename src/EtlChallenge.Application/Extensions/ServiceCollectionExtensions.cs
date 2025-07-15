@@ -14,13 +14,15 @@ public static class ServiceCollectionExtensions
             this IServiceCollection services,
             IConfiguration configuration,
             Type[]? consumers = null,
-            (Type sagaType, Type sagaStateType)[]? sagas = null)
+            Type[]? sagas = null)
     {
         services.AddStorageService(configuration);
 
         services.AddMassTransit(x =>
             {
                 x.SetKebabCaseEndpointNameFormatter();
+
+                x.SetInMemorySagaRepositoryProvider();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -35,8 +37,7 @@ public static class ServiceCollectionExtensions
                 if (sagas is not null)
                     Array.ForEach(
                         sagas,
-                        saga => x.AddSagaStateMachine(saga.sagaType));
-
+                        saga => x.AddSagaStateMachine(saga));
             });
 
         services.AddTransient<IPolicyService, PolicyService>();

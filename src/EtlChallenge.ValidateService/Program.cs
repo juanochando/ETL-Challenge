@@ -9,9 +9,7 @@ builder.AddServiceDefaults();
 builder.Services.AddEtlChallengeApplication(
     builder.Configuration,
     sagas:
-    [
-        (typeof(BatchSaga), typeof(BatchState))
-    ]);
+    [typeof(BatchSaga)]);
 
 var app = builder.Build();
 
