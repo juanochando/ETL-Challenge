@@ -1,10 +1,12 @@
+using Microsoft.Extensions.Logging;
 using MassTransit;
 using EtlChallenge.Contracts.Events.RiskFile;
 using EtlChallenge.StorageService;
 using EtlChallenge.Contracts.Events.Risk;
 using EtlChallenge.Model;
+using EtlChallenge.Application.Models;
 
-namespace EtlChallenge.ParserService;
+namespace EtlChallenge.Application.Handlers;
 
 public class NewRiskFileHandler(IStorageService storageService,
     IPublishEndpoint publishEndpoint,

@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="../EtlChallenge.Application/EtlChallenge.Application.csproj" />
     <ProjectReference Include="../EtlChallenge.Contracts/EtlChallenge.Contracts.csproj" />
-    <ProjectReference Include="../EtlChallenge.Contracts/EtlChallenge.Model.csproj" />
+    <ProjectReference Include="../EtlChallenge.Model/EtlChallenge.Model.csproj" />
     <ProjectReference Include="../EtlChallenge.ServiceDefaults/EtlChallenge.ServiceDefaults.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,5 @@
 using EtlChallenge.Application.Extensions;
-using EtlChallenge.ParserService;
+using EtlChallenge.Application.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 

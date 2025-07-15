@@ -1,9 +1,11 @@
+using Microsoft.Extensions.Logging;
 using MassTransit;
 using EtlChallenge.Contracts.Events.PolicyFile;
 using EtlChallenge.StorageService;
 using EtlChallenge.Contracts.Events.Policy;
+using EtlChallenge.Application.Models;
 
-namespace EtlChallenge.ParserService;
+namespace EtlChallenge.Application.Handlers;
 
 public class NewPolicyFileHandler(IStorageService storageService,
     IPublishEndpoint publishEndpoint,

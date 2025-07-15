@@ -1,4 +1,4 @@
-namespace EtlChallenge.ParserService;
+namespace EtlChallenge.Application.Models;
 
 public class PolicyFileModel
 {

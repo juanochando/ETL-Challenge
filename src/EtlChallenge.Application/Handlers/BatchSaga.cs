@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using MassTransit;
 using EtlChallenge.Contracts.Events.Policy;
 using EtlChallenge.Contracts.Events.PolicyFile;
