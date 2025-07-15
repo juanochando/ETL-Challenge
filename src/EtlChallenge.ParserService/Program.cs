@@ -8,7 +8,10 @@ builder.AddServiceDefaults();
 
 builder.Services.AddEtlChallengeApplication(
     builder.Configuration,
-    [typeof(NewPolicyFileHandler)]);
+    [
+        typeof(NewPolicyFileHandler),
+        typeof(NewRiskFileHandler)
+    ]);
 
 var app = builder.Build();
 
