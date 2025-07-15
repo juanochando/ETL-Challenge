@@ -98,4 +98,36 @@ Thus, some implementation leaks are intentional, like having an isolated table w
 # Useful commands
 
 * alias build="dotnet build /workspaces/ETLChallenge/src/EtlChallenge.sln"
-* alias run="dotnet run --project /workspaces/ETLChallenge/src/EtlChallenge.AppHost/EtlChallenge.AppHost.csproj"
+* alias run="dotnet run --project /workspaces/ETLChallenge/src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj"
+
+
+- To create a new migration. Change the MigrationName parameter.
+> `dotnet ef migrations add MigrationName -c ChallengeDBContext -o Migrations -p "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj" -s "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj" --configuration Debug`
+
+- Remove the most recent migration:
+> `dotnet ef migrations remove -c ChallengeDBContext -p "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj" -s "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj"`
+
+- To create a script that applies the migrations.
+
+   *   The script is idempotent - can be run on an existing database. You can choose the initial and final migrations for a delta or just remove both.
+
+   *   The recommended approach is to generate one script per migration.
+
+   *   **PLEASE EDIT EACH SCRIPT TO PREVENT DATA LOSS**
+
+   *   **The deployment pipeline will execute all the scripts in alphabetical order**
+
+> `dotnet ef migrations script FromMigrationName ToMigrationName -c ChallengeDBContext -o "src/EtlChallenge.ChallengeDB/Migrations/Scripts/$(date +%Y%m%d%H%M%S)_MigrationScript.sql" -p "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj" -s "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj" --idempotent`
+
+- Update the database.
+> `dotnet ef database update -c ChallengeDBContext -p "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj" -s "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj"`
+
+- Delete the database.
+> `dotnet ef database drop -c ChallengeDBContext -p "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj" -s "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj"`
+
+- Generate a bundle program that can be executed independently.
+> `dotnet ef migrations bundle --self-contained -r linux-x64`
+> `.\efbundle.exe --connection 'Data Source=(local)\MSSQLSERVER;Initial Catalog=EtlChallengeDb;User ID=myUsername;Password=myPassword'`
+
+- List the migrations.
+> `dotnet ef migrations list -c ChallengeDBContext -p "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj" -s "src/EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj"`

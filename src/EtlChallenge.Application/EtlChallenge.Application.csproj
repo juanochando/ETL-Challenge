@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="../EtlChallenge.Contracts/EtlChallenge.Contracts.csproj" />
     <ProjectReference Include="../EtlChallenge.StorageService/EtlChallenge.StorageService.csproj" />
+    <ProjectReference Include="../EtlChallenge.ChallengeDB/EtlChallenge.ChallengeDB.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +18,8 @@
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.1" />
     <PackageReference Include="MediatR" Version="13.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.3.1" />
   </ItemGroup>
 
 </Project>

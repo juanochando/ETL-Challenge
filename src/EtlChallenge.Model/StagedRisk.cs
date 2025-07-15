@@ -4,10 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 namespace EtlChallenge.Model;
 
 [ExcludeFromCodeCoverage]
-public class Risk
+public class StagedRisk
 {
     [Key]
     public required string Id { get; set; }
+
+    public required Guid CorrelationId { get; set; }
+
     public required string Name { get; set; }
     public required Perils Peril { get; set; }
     public required string PolicyId { get; set; }

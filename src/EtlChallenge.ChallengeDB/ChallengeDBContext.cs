@@ -7,8 +7,8 @@ namespace EtlChallenge.ChallengeDB;
 public class ChallengeDBContext(DbContextOptions<ChallengeDBContext> options)
  : DbContext(options)
 {
+    public DbSet<StagedPolicy> StagedPolicies => Set<StagedPolicy>();
     public DbSet<Policy> Policies => Set<Policy>();
-    public DbSet<PolicyFile> PolicyFiles => Set<PolicyFile>();
+    public DbSet<StagedRisk> StagedRisks => Set<StagedRisk>();
     public DbSet<Risk> Risks => Set<Risk>();
-    public DbSet<RiskFile> RiskFiles => Set<RiskFile>();
 }

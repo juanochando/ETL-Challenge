@@ -4,12 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 namespace EtlChallenge.Model;
 
 [ExcludeFromCodeCoverage]
-public class Policy
+public class StagedPolicy
 {
     [Key]
     public required string Id { get; set; }
-    public required string Name { get; set; }
-    public required string FileStorageReference { get; set; }
 
-    public ICollection<Risk> Risks { get; set; } = [];
+    public required Guid CorrelationId { get; set; }
+
+    public required string Name { get; set; }
+
+    public required string FileStorageReference { get; set; }
 }

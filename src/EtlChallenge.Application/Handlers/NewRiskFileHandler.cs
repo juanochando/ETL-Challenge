@@ -36,7 +36,8 @@ public class NewRiskFileHandler(IStorageService storageService,
                         Street = Risk.Street,
                         CID = Risk.CID,
                         Latitude = Risk.Latitude,
-                        Longitude = Risk.Longitude
+                        Longitude = Risk.Longitude,
+                        FileStorageReference = context.Message.RiskFileReference
                     }));
             }
 

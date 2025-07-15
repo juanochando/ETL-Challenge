@@ -30,6 +30,7 @@ public class NewPolicyFileHandler(IStorageService storageService,
                     {
                         Id = policy.ID,
                         Name = policy.PolicyName,
+                        FileStorageReference = context.Message.PolicyFileReference,
                     }));
             }
 

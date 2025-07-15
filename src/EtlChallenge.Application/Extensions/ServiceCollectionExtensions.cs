@@ -1,9 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using MassTransit;
 using EtlChallenge.Application.Services;
 using EtlChallenge.StorageService.Extensions;
+using EtlChallenge.ChallengeDB;
+using System.Reflection;
 
 namespace EtlChallenge.Application.Extensions;
 
@@ -17,6 +20,14 @@ public static class ServiceCollectionExtensions
             Type[]? sagas = null)
     {
         services.AddStorageService(configuration);
+
+        services.AddDbContext<ChallengeDBContext>(options =>
+            {
+                var connectionString = configuration.GetConnectionString("etlchallengedatabase")
+                    ?? throw new InvalidOperationException("Connection string 'etlchallengedatabase' not found.");
+                options.UseSqlServer(connectionString);
+
+            });
 
         services.AddMassTransit(x =>
             {

@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using EtlChallenge.ChallengeDB;
 using EtlChallenge.ChallengeDBManager;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 builder.AddSqlServerDbContext<ChallengeDBContext>("etlchallengedatabase", null,
     optionsBuilder => optionsBuilder.UseSqlServer(sqlServerBuilder =>
-    sqlServerBuilder.MigrationsAssembly(typeof(ChallengeDBContext).Assembly.GetName().Name))
-);
+    sqlServerBuilder.MigrationsAssembly(Assembly.GetAssembly(typeof(ChallengeDBInitializer)) ?? Assembly.GetExecutingAssembly())));
 
 builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing.AddSource(ChallengeDBInitializer.ActivitySourceName));
