@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace EtlChallenge.Model;
@@ -5,6 +6,7 @@ namespace EtlChallenge.Model;
 [ExcludeFromCodeCoverage]
 public class Risk
 {
+    [Key]
     public required string Id { get; set; }
     public required string Name { get; set; }
     public required Perils Peril { get; set; }

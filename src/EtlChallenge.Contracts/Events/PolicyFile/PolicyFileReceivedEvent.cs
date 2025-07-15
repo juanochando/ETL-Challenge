@@ -1,6 +1,7 @@
 namespace EtlChallenge.Contracts.Events.PolicyFile;
 
-public class PolicyFileReceivedEvent : BaseEvent
+public record PolicyFileReceivedEvent
+    (string PolicyFileReference, Guid CorrelationId, DateTimeOffset? Timestamp = null)
+    : BaseEvent(CorrelationId, Timestamp)
 {
-
 }

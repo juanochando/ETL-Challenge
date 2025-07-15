@@ -16,7 +16,7 @@ The pipeline flow is as follows:
   Two consumers validate policies and risks separately. When triggered, it validates each record (schema, required fields, data quality).
   It publishes either a success or failure event for each record, maintaining the Correlation ID.
  * Aggregator / Saga
-  A sate machine Saga listens to PolicyValidated and RiskValidated. The Correlation ID will act as overall Saga state key.
+  A sate machine Saga listens to events. The Correlation ID will act as overall Saga state key.
   It shall keep track of the parent / children relationship between policies and risks. It will publish either a batch completed or batch error event.
  * Load Service: Subscribed to batch completed events. It performs the final ETL step, saving into database. After successfully loading, it emits a load completed or load error event, also maintaining the Correlation ID.
 

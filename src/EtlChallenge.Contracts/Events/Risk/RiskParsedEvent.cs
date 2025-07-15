@@ -1,6 +1,7 @@
 namespace EtlChallenge.Contracts.Events.Risk;
 
-public class RiskParsedEvent
+public record RiskParsedEvent
+    (Guid CorrelationId, DateTimeOffset? Timestamp = null)
+    : BaseEvent(CorrelationId, Timestamp)
 {
-
 }

@@ -4,6 +4,4 @@ public abstract class Constants
 {
     public static readonly string DbService_ServerName = "EtlChallengeDbServer";
     public static readonly string DbService_ConnectionStringName = "EtlChallengeDb";
-
-    public static readonly string FileUploadServiceIdentifier = "https+http://fileuloadservice";
 }

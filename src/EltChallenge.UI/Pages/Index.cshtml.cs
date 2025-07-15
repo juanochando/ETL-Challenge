@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
-using EltChallenge.UI.Services;
+using MediatR;
+using EtlChallenge.Application.Commands;
 
 namespace EltChallenge.UI.Pages;
 
 public class IndexModel(
-    ILogger<IndexModel> _logger,
-    IHostEnvironment _environment,
-    FileUploadServiceClient fileUploadServiceClient) : PageModel
+    IMediator mediator,
+    ILogger<IndexModel> logger) : PageModel
 {
     [BindProperty]
     public IFormFile? UploadedFile { get; set; }
@@ -15,34 +15,45 @@ public class IndexModel(
     internal string UploadResult { get; set; } = string.Empty;
     internal string ErrorMessage { get; set; } = string.Empty;
 
-    public async void OnPostAsync()
+    public async Task OnPostAsync()
     {
         if (UploadedFile == null || UploadedFile.Length == 0)
         {
-            _logger.LogError("Posted an empty file.");
+            ErrorMessage = "Please select a file to upload.";
+            logger.LogError("Posted an empty file.");
             return;
         }
 
-        _logger.LogInformation("Uploading {FileName}.", UploadedFile.FileName);
+        logger.LogTrace("Received file {FileName}.", UploadedFile.FileName);
 
-        string targetFileName = $"{_environment.ContentRootPath}/{UploadedFile.FileName}";
+        try
+        {
+            using var memoryStream = new MemoryStream();
+            await UploadedFile.CopyToAsync(memoryStream);
 
-        using var stream = new FileStream(targetFileName, FileMode.Create);
-        await UploadedFile.CopyToAsync(stream);
+            // Reset the position to the beginning of the stream for reading
+            memoryStream.Position = 0;
 
-        await fileUploadServiceClient.UploadFileAsync(stream, UploadedFile.FileName)
-            .ContinueWith(task =>
+            // At this point, we can process the file content in memoryStream
+            var commandResponse = await mediator.Send(new NewRawPolicyFile(Guid.NewGuid(), memoryStream));
+
+            if (commandResponse is null)
             {
-                if (task.IsFaulted)
-                {
-                    ErrorMessage = task.Exception?.Message ?? "An error occurred during file upload.";
-                    _logger.LogError("Error {Error}", ErrorMessage);
-                }
-                else
-                {
-                    UploadResult = "File uploaded successfully.";
-                    _logger.LogInformation("Result {Result}", UploadResult);
-                }
-            });
+                logger.LogError("Received empty file process response");
+                UploadResult = "Unknown file process error.";
+            }
+
+            logger.LogTrace("Received file processed response References {commandResponse.policyFileReference} - {commandResponse.riskFileReference}",
+                commandResponse?.PolicyFileReference,
+                commandResponse?.RiskFileReference);
+
+            UploadResult = $"File uploaded successfully. References {commandResponse?.PolicyFileReference} - {commandResponse?.RiskFileReference}";
+            logger.LogTrace("Result {Result}", UploadResult);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+            logger.LogError(ex, "Error during file upload");
+        }
     }
 }

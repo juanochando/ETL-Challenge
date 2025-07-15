@@ -1,6 +1,7 @@
 namespace EtlChallenge.Contracts.Events.Policy;
 
-public class PolicyParsedEvent
+public record PolicyParsedEvent
+    (Guid CorrelationId, DateTimeOffset? Timestamp = null)
+    : BaseEvent(CorrelationId, Timestamp)
 {
-
 }

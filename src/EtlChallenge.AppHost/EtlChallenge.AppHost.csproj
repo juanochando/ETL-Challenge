@@ -12,12 +12,14 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="9.3.1" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="9.3.1" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.3.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../EltChallenge.UI/EltChallenge.UI.csproj" />
+    <ProjectReference Include="../EtlChallenge.ChallengeDBManager/EtlChallenge.ChallengeDBManager.csproj" />
     <ProjectReference Include="../EtlChallenge.LoadService/EtlChallenge.LoadService.csproj" />
-    <ProjectReference Include="../EtlChallenge.FileUploadService/EtlChallenge.FileUploadService.csproj" />
     <ProjectReference Include="../EtlChallenge.ParserService/EtlChallenge.ParserService.csproj" />
     <ProjectReference Include="../EtlChallenge.ValidateService/EtlChallenge.ValidateService.csproj" />
   </ItemGroup>

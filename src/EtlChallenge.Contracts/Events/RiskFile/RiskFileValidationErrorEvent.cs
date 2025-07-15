@@ -1,6 +1,7 @@
 namespace EtlChallenge.Contracts.Events.RiskFile;
 
-public class RiskFileValidationErrorEvent : BaseEvent
+public record RiskFileValidationErrorEvent
+    (string RiskFileReference, Guid CorrelationId, DateTimeOffset? Timestamp = null)
+    : BaseEvent(CorrelationId, Timestamp)
 {
-
 }

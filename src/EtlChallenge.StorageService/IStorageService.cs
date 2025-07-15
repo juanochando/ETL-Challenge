@@ -3,7 +3,7 @@
 public interface IStorageService
 {
     /// <summary>
-    /// Stores a file permanently.
+    /// Stores a file's contents permanently.
     /// </summary>
     /// <param name="fileName">The name of the file to upload.</param>
     /// <param name="fileContent">The content of the file as a stream.</param>
@@ -11,9 +11,9 @@ public interface IStorageService
     Task<string> UploadFileAsync(string fileName, Stream fileContent);
 
     /// <summary>
-    /// Retrieves a file from the permanent storage.
+    /// Retrieves a file's contents from the permanent storage.
     /// </summary>
     /// <param name="fileReference">The reference of the file to retrieve.</param>
     /// <returns>A task that represents the asynchronous operation, containing the file content as a stream.</returns>
-    Task<Stream> GetFileAsync(string fileReference);
+    byte[] GetFileAsync(string fileReference);
 }

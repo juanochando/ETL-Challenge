@@ -1,19 +1,24 @@
-using EltChallenge.UI.Services;
 using EtlChallenge.Contracts.Application;
+using EtlChallenge.Application.Extensions;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
 // Add services to the container.
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(
+        Assembly.GetAssembly(typeof(EtlChallenge.Application.Extensions.ServiceCollectionExtensions))
+        ?? Assembly.GetExecutingAssembly());
+});
+
+builder.Services.AddEtlChallengeApplication(builder.Configuration);
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddHttpForwarderWithServiceDiscovery();
-
-builder.Services.AddHttpServiceReference<FileUploadServiceClient>(
-    Constants.FileUploadServiceIdentifier,
-    //"https+http://catalogservice",
-    healthRelativePath: "health");
 
 var app = builder.Build();
 
@@ -34,8 +39,5 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
-
-// app.MapForwarder("/catalog/images/{id}", "https+http://catalogservice", "/api/v1/catalog/items/{id}/image");
-
 
 await app.RunAsync();

@@ -1,7 +1,5 @@
 namespace EtlChallenge.Contracts.Events;
 
-public class BaseEvent : IBaseEvent
+public record BaseEvent(Guid CorrelationId, DateTimeOffset? Timestamp = null)
 {
-    public required Guid CorrelationId { get; set; }
-    public required DateTimeOffset Timestamp { get; set; }
 }
