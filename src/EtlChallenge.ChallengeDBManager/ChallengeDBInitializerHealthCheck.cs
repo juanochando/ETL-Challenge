@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace EtlChallenge.ChallengeDBManager;
 
+[ExcludeFromCodeCoverage]
 internal class ChallengeDBInitializerHealthCheck(ChallengeDBInitializer dbInitializer) : IHealthCheck
 {
     public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
